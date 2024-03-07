@@ -1,3 +1,6 @@
+package Tasks;
+
+import Status.Status;
 import java.util.Objects;
 
 public class Task {
@@ -56,7 +59,7 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "Task{" +
+        String result = "Tasks.Task{" +
                 "name='" + name + '\'';
                 if (description != null) {
                     result += ", description.lenght='" + description.length() + '\'';

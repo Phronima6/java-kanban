@@ -1,3 +1,7 @@
+package TaskManager;
+
+import Tasks.*;
+import Status.Status;
 import java.util.HashMap;
 
 public class TaskManager {
@@ -18,10 +22,26 @@ public class TaskManager {
     }
     // Создание Подзадачи
     public static int creatingSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                                      int idEpic, String name, String description) {
+                                      HashMap<Integer, Epic> epicList, int idEpic, String name, String description) {
         if (subTaskListOfEpic.containsKey(idEpic)) { // Если создана задача типа Эпик
             SubTask subTask = new SubTask(name, description);
             subTaskListOfEpic.get(idEpic).put(subTask.hashCode(), subTask);
+            int statusNew = 0;
+            int statusDone = 0;
+            for (SubTask subTasks : subTaskListOfEpic.get(idEpic).values()) {
+                if (subTasks.getStatus() == Status.NEW) {
+                    statusNew++;
+                } else if (subTasks.getStatus() == Status.DONE) {
+                    statusDone++;
+                }
+            }
+            if (statusNew == subTaskListOfEpic.get(idEpic).size()) {
+                epicList.get(idEpic).setStatus(Status.NEW);
+            } else if (statusDone == subTaskListOfEpic.get(idEpic).size()) {
+                epicList.get(idEpic).setStatus(Status.DONE);
+            } else {
+                epicList.get(idEpic).setStatus(Status.IN_PROGRESS);
+            }
             return subTask.hashCode();
         } else {
             return 0;
@@ -29,7 +49,7 @@ public class TaskManager {
     }
     // Обновление обычной Задачи
     public static void updateTask(HashMap<Integer, Task> taskList, int idTask, String name, String description,
-                           Status status) {
+                                  Status status) {
         if (taskList.containsKey(idTask)) { // Если создана обычная Задача
             Task task = new Task(name, description);
             task.setStatus(status);
@@ -45,18 +65,18 @@ public class TaskManager {
                 epicList.put(idEpic, epic);
             } else { // Если Подзадачи есть, то обновляем статус задачи типа Эпик
                 Epic epic = new Epic(name, description);
-                int stNew = 0;
-                int stDone = 0;
+                int statusNew = 0;
+                int statusDone = 0;
                 for (SubTask subTask : subTaskListOfEpic.get(idEpic).values()) {
                     if (subTask.getStatus() == Status.NEW) {
-                        stNew++;
+                        statusNew++;
                     } else if (subTask.getStatus() == Status.DONE) {
-                        stDone++;
+                        statusDone++;
                     }
                 }
-                if (stNew == subTaskListOfEpic.get(idEpic).size()) {
+                if (statusNew == subTaskListOfEpic.get(idEpic).size()) {
                     epic.setStatus(Status.NEW);
-                } else if (stDone == subTaskListOfEpic.get(idEpic).size()) {
+                } else if (statusDone == subTaskListOfEpic.get(idEpic).size()) {
                     epic.setStatus(Status.DONE);
                 } else {
                     epic.setStatus(Status.IN_PROGRESS);
@@ -73,18 +93,18 @@ public class TaskManager {
             SubTask subTask = new SubTask(name, description); // Если создана задача типа Эпик и Подзадача
             subTask.setStatus(status);
             subTaskListOfEpic.get(idEpic).put(idSubTask, subTask);
-            int stNew = 0;
-            int stDone = 0;
+            int statusNew = 0;
+            int statusDone = 0;
             for (SubTask subTasks : subTaskListOfEpic.get(idEpic).values()) {
                 if (subTasks.getStatus() == Status.NEW) {
-                    stNew++;
+                    statusNew++;
                 } else if (subTasks.getStatus() == Status.DONE) {
-                    stDone++;
+                    statusDone++;
                 }
             }
-            if (stNew == subTaskListOfEpic.get(idEpic).size()) {
+            if (statusNew == subTaskListOfEpic.get(idEpic).size()) {
                 epicList.get(idEpic).setStatus(Status.NEW);
-            } else if (stDone == subTaskListOfEpic.get(idEpic).size()) {
+            } else if (statusDone == subTaskListOfEpic.get(idEpic).size()) {
                 epicList.get(idEpic).setStatus(Status.DONE);
             } else {
                 epicList.get(idEpic).setStatus(Status.IN_PROGRESS);
@@ -150,7 +170,7 @@ public class TaskManager {
     }
     // Удаление всех задач
     public static void delAllTasks(HashMap<Integer, Task> taskList, HashMap<Integer, Epic> epicList,
-                            HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic) {
+                                   HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic) {
         if (!taskList.isEmpty()) { // Если список обычных Задач не пустой
             taskList.clear();
         }
@@ -169,7 +189,7 @@ public class TaskManager {
     }
     // Удаление задачи типа Эпик по идентификатору и как следствие удаление всех Подзадач данного Эпика
     public static void delEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                        HashMap<Integer, Epic> epicList, int idEpic) {
+                               HashMap<Integer, Epic> epicList, int idEpic) {
         if (epicList.containsKey(idEpic)) { // Если задач типа Эпик создана
             epicList.remove(idEpic);
             if (subTaskListOfEpic.containsKey(idEpic)) { // Если список Подзадач конктерной задачи типа Эпик создан
@@ -182,18 +202,18 @@ public class TaskManager {
                                    HashMap<Integer, Epic> epicList, int idEpic, int idSubTask) {
         if (subTaskListOfEpic.get(idEpic).containsKey(idSubTask)) { // Если Подзадача создана
             subTaskListOfEpic.get(idEpic).remove(idSubTask);
-            int stNew = 0;
-            int stDone = 0;
+            int statusNew = 0;
+            int statusDone = 0;
             for (SubTask subTask : subTaskListOfEpic.get(idEpic).values()) {
                 if (subTask.getStatus() == Status.NEW) {
-                    stNew++;
+                    statusNew++;
                 } else if (subTask.getStatus() == Status.DONE) {
-                    stDone++;
+                    statusDone++;
                 }
             }
-            if (stNew == subTaskListOfEpic.get(idEpic).size()) {
+            if (statusNew == subTaskListOfEpic.get(idEpic).size()) {
                 epicList.get(idEpic).setStatus(Status.NEW);
-            } else if (stDone == subTaskListOfEpic.get(idEpic).size()) {
+            } else if (statusDone == subTaskListOfEpic.get(idEpic).size()) {
                 epicList.get(idEpic).setStatus(Status.DONE);
             } else {
                 epicList.get(idEpic).setStatus(Status.IN_PROGRESS);

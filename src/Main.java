@@ -1,3 +1,7 @@
+import Status.Status;
+import TaskManager.TaskManager;
+import Tasks.*;
+
 import java.util.HashMap;
 
 public class Main {
@@ -11,7 +15,7 @@ public class Main {
 
         /* String name = ""; // Ввод названия задачи
         String description = ""; // Ввод описания задачи
-        Status status = Status.DONE; // Ввод статуса задачи
+        Status.Status status = Status.Status.DONE; // Ввод статуса задачи
         // получаем id задачи
         int idTask = taskManager.creatingTask(taskList, name, description);
         int idEpic = taskManager.creatingEpic(subTaskListOfEpic, epicList, description);
@@ -31,19 +35,19 @@ public class Main {
 
         name = "Подзадача 1";
         description = "Подзадача 1...";
-        int idSubTask = taskManager.creatingSubTask(subTaskListOfEpic, idEpic, name, description);
+        int idSubTask = taskManager.creatingSubTask(subTaskListOfEpic, epicList, idEpic, name, description);
         System.out.println(idSubTask);
         System.out.println(subTaskListOfEpic.get(idEpic).get(idSubTask));
 
         name = "Подзадача 2";
         description = "Подзадача 2...";
-        idSubTask = taskManager.creatingSubTask(subTaskListOfEpic, idEpic, name, description);
+        idSubTask = taskManager.creatingSubTask(subTaskListOfEpic, epicList, idEpic, name, description);
         System.out.println(idSubTask);
         System.out.println(subTaskListOfEpic.get(idEpic).get(idSubTask));
 
         name = "Подзадача 3";
         description = "Подзадача 3...";
-        idSubTask = taskManager.creatingSubTask(subTaskListOfEpic, idEpic, name, description);
+        idSubTask = taskManager.creatingSubTask(subTaskListOfEpic, epicList, idEpic, name, description);
         System.out.println(idSubTask);
         System.out.println(subTaskListOfEpic.get(idEpic).get(idSubTask));
 

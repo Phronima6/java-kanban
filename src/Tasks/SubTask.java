@@ -1,11 +1,15 @@
-public class Epic extends Task {
-    public Epic(String name, String description) {
+package Tasks;
+
+import Tasks.Task;
+
+public class SubTask extends Task {
+    public SubTask(String name, String description) {
         super(name, description);
     }
 
     @Override
     public String toString() {
-        String result = "Epic{" +
+        String result = "Tasks.SubTask{" +
                 "name='" + getName() + '\'';
         if (getDescription() != null) {
             result += ", description.lenght='" + getDescription().length() + '\'';
