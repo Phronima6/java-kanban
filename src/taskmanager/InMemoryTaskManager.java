@@ -1,11 +1,10 @@
-package TaskManager;
+package taskmanager;
 
-import HistoryManager.HistoryManager;
-import Managers.Managers;
-import Tasks.*;
-import Status.Status;
+import historymanager.HistoryManager;
+import managers.Managers;
+import tasks.*;
+import status.Status;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class InMemoryTaskManager implements TaskManager {
 

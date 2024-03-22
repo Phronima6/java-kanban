@@ -1,7 +1,7 @@
-package Managers;
+package managers;
 
-import HistoryManager.*;
-import TaskManager.*;
+import historymanager.*;
+import taskmanager.*;
 
 public class Managers {
 

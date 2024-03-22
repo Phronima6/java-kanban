@@ -1,6 +1,5 @@
-package Status;
+package status;
 
-import java.util.Objects;
 public enum Status {
     NEW,
     IN_PROGRESS,

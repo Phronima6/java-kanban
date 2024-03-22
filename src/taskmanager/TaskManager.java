@@ -1,7 +1,7 @@
-package TaskManager;
+package taskmanager;
 
-import Status.Status;
-import Tasks.*;
+import status.Status;
+import tasks.*;
 import java.util.HashMap;
 
 public interface TaskManager {
