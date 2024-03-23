@@ -1,6 +1,6 @@
-package taskmanager;
+package managers.task;
 
-import historymanager.HistoryManager;
+import managers.history.HistoryManager;
 import managers.Managers;
 import tasks.*;
 import status.Status;
@@ -215,8 +215,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    // Обновление статуса задачи типа Эпик
-    public static void updateStatusOfEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
+    @Override
+    public void updateStatusOfEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
                                           HashMap<Integer, Epic> epicList, int idEpic) {
         int statusNew = 0;
         int statusDone = 0;

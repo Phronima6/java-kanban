@@ -1,4 +1,4 @@
-package taskmanager;
+package managers.task;
 
 import status.Status;
 import tasks.*;
@@ -73,5 +73,9 @@ public interface TaskManager {
     // Удаление Подзадачи по идентификатору и обновление статуса задачи типа Эпик
     void delSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
                     HashMap<Integer, Epic> epicList, int idEpic, int idSubTask);
+
+    // Обновление статуса задачи типа Эпик
+    void updateStatusOfEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
+                       HashMap<Integer, Epic> epicList, int idEpic);
 
 }
