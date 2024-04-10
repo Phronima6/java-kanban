@@ -186,6 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (!subTaskListOfEpic.isEmpty()) { // Если список Подзадач не пустой
             subTaskListOfEpic.clear();
         }
+        historyManager.remove(); // Удаляем все задачи из истории
     }
 
     @Override
@@ -193,6 +194,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (taskList.containsKey(idTask)) { // Если обычная Задача создана
             taskList.remove(idTask);
         }
+        historyManager.remove(idTask); // Удаляем обычную задачу из истории
     }
 
     @Override
@@ -200,9 +202,13 @@ public class InMemoryTaskManager implements TaskManager {
                                HashMap<Integer, Epic> epicList, int idEpic) {
         if (epicList.containsKey(idEpic)) { // Если задач типа Эпик создана
             epicList.remove(idEpic);
+            for (Integer id : subTaskListOfEpic.get(idEpic).keySet()) {
+                historyManager.remove(id); // Удаляем из истории все Подзадачи, которые относятся к задаче типа Эпик
+            }
             if (subTaskListOfEpic.containsKey(idEpic)) { // Если список Подзадач конктерной задачи типа Эпик создан
                 subTaskListOfEpic.remove(idEpic);
             }
+            historyManager.remove(idEpic); // Удаляем задачу типа Эпик из истории
         }
     }
 
@@ -213,6 +219,7 @@ public class InMemoryTaskManager implements TaskManager {
             subTaskListOfEpic.get(idEpic).remove(idSubTask);
             updateStatusOfEpic(subTaskListOfEpic, epicList, idEpic);
         }
+        historyManager.remove(idSubTask); // Удаляем Подзадачу из истории
     }
 
     @Override
