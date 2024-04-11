@@ -20,7 +20,7 @@ public class InMemoryTaskManagerTest {
 
     // Проверяем: создание, обновление, вывод, удаление и совпадение id обычной Задачи
     @Test
-    public void creatingAndUpdateAndPrintAndDelTask() {
+    public void createUpdatePrintDeleteTask() {
         Task task = new Task("Задача 1", "Задача 1...");
         name = "Задача 1";
         description = "Задача 1...";
@@ -42,7 +42,7 @@ public class InMemoryTaskManagerTest {
 
     // Проверяем: создание, обновление, вывод, удаление, совпадение id задач типа Эпик
     @Test
-    public void creatingAndUpdateAndPrintAndDelEpic() {
+    public void createUpdatePrintDeleteEpic() {
         Epic epic = new Epic("Эпик 1", "Эпик 1...");
         name = "Эпик 1";
         description = "Эпик 1...";
@@ -65,7 +65,7 @@ public class InMemoryTaskManagerTest {
 
     // Проверяем: создание, обновление, вывод, удаление, совпадение id Подзадачи, изменение статуса задачи типа Эпик
     @Test
-    public void creatingAndUpdateAndPrintAndDelSubTask() {
+    public void createUpdatePrintDeleteSubTask() {
         SubTask subTask = new SubTask("Подзадача 1", "Подзадача 1...");
         name = "Эпик 1";
         description = "Эпик 1...";
@@ -99,9 +99,9 @@ public class InMemoryTaskManagerTest {
                 idEpic, idSubTask), "Ошибка, Подзадача не удалена.");
     }
 
-    // Проверяем совпадение id Задачи, id задачи типа Эпик и id Подзадачи
+    // Проверяем: совпадение id Задачи, id задачи типа Эпик и id Подзадачи
     @Test
-    public void idTaskNotEqualsIdEpicNotEqualsIdSubTask() {
+    public void idTasksNotEquals() {
         name = "Задача 1";
         description = "Задача 1...";
         idTask = taskManager.creatingTask(taskManager.getTaskList(), name, description);
@@ -117,9 +117,9 @@ public class InMemoryTaskManagerTest {
         Assertions.assertNotEquals(idEpic, idSubTask, "Ошибка, id Задачи и задачи типа Эпик совпадает.");
     }
 
-    // Проверяем печать всех задач, печать всех Подзадач, удаление всех задач
+    // Проверяем: печать всех задач, печать всех Подзадач, удаление всех задач
     @Test
-    public void printAllTasksAndPrintAllEpicSubTasksAndDelAllTasks() {
+    public void printDeleteAllTasks() {
         String infoAllTasks; // Ожидаемый результат вывода всех задач
         String infoAllEpicSubTasks; // Ожидаемый результат вывода всех Подзадач
         Task task = new Task("Задача 1", "Задача 1...");
@@ -150,9 +150,9 @@ public class InMemoryTaskManagerTest {
                 taskManager.getEpicList(), taskManager.getSubTaskListOfEpic()), "Ошибка, задачи не удалены.");
     }
 
-    // Проверяем исключение повторов в истории задач и порядок сохранения задачи в историю
+    // Проверяем: исключение повторов в истории задач и порядок сохранения задачи в историю
     @Test
-    public void sizeHistoryAndSavingVersion() {
+    public void sizeHistorySavingVersion() {
         String infoHistory; // Ожидаемый результат вывода истории задач
         Task taskOne = new Task("Задача 1", "Задача 1...");
         Task taskTwo = new Task("Задача 2", "Задача 2...");
