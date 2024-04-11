@@ -117,18 +117,16 @@ public class InMemoryTaskManagerTest {
         Assertions.assertNotEquals(idEpic, idSubTask, "Ошибка, id Задачи и задачи типа Эпик совпадает.");
     }
 
-    // Проверяем печать всех задач, печать всех Подзадач, печать истории, размерность истории, удаление всех задач
+    // Проверяем печать всех задач, печать всех Подзадач, удаление всех задач
     @Test
-    public void printAllTasksAndPrintAllEpicSubTasksAndPrintHistoryAndDelAllTasks() {
+    public void printAllTasksAndPrintAllEpicSubTasksAndDelAllTasks() {
         String infoAllTasks; // Ожидаемый результат вывода всех задач
         String infoAllEpicSubTasks; // Ожидаемый результат вывода всех Подзадач
-        String infoHistory; // Ожидаемый результат вывода истории
         Task task = new Task("Задача 1", "Задача 1...");
         Epic epic = new Epic("Эпик 1", "Эпик 1...");
         SubTask subTaskOne = new SubTask("Подзадача 1", "Подзадача 1...");
         infoAllTasks = task + "\n" + epic + "\n" + subTaskOne + "\n";
         infoAllEpicSubTasks = subTaskOne + "\n";
-        infoHistory = infoAllTasks + infoAllEpicSubTasks;
         name = "Задача 1";
         description = "Задача 1...";
         idTask = taskManager.creatingTask(taskManager.getTaskList(), name, description);
@@ -146,41 +144,39 @@ public class InMemoryTaskManagerTest {
         Assertions.assertEquals(infoAllEpicSubTasks,
                 taskManager.printAllEpicSubTasks(taskManager.getSubTaskListOfEpic(), idEpic),
                 "Ошибка, выводимые Подзадачи не совпадают с ожидаемыми.");
-        Assertions.assertEquals(infoHistory, taskManager.printHistory(),
-                "Ошибка, выводимая история не совпадает с ожидаемой.");
         taskManager.delAllTasks(taskManager.getTaskList(), taskManager.getEpicList(),
                 taskManager.getSubTaskListOfEpic());
         Assertions.assertEquals("", taskManager.printAllTasks(taskManager.getTaskList(),
                 taskManager.getEpicList(), taskManager.getSubTaskListOfEpic()), "Ошибка, задачи не удалены.");
     }
 
-    // Проверяем размерность истории задач и сохранение предыдущей версии задачи
+    // Проверяем исключение повторов в истории задач и порядок сохранения задачи в историю
     @Test
     public void sizeHistoryAndSavingVersion() {
+        String infoHistory; // Ожидаемый результат вывода истории задач
         Task taskOne = new Task("Задача 1", "Задача 1...");
         Task taskTwo = new Task("Задача 2", "Задача 2...");
-        String savingVersion = taskOne + "\n" + taskTwo + "\n"; // Ожидаемый результат вывода предыдущей версиии задачи
-        String infoTasks = ""; // Ожидаемый результат вывода 10 задач
+        Epic epic = new Epic("Эпик 1", "Эпик 1...");
+        infoHistory = taskOne + "\n" + epic + "\n" + taskTwo + "\n";
         name = "Задача 1";
         description = "Задача 1...";
         idTask = taskManager.creatingTask(taskManager.getTaskList(), name, description);
         taskManager.printTask(taskManager.getTaskList(), idTask);
+        taskManager.printTask(taskManager.getTaskList(), idTask);
         name = "Задача 2";
         description = "Задача 2...";
-        status = Status.NEW;
-        taskManager.updateTask(taskManager.getTaskList(), idTask, name, description, status);
+        idTask = taskManager.creatingTask(taskManager.getTaskList(), name, description);
         taskManager.printTask(taskManager.getTaskList(), idTask);
-        Assertions.assertEquals(savingVersion, taskManager.printHistory(),
-                "Ошибка, предыдущая задача не сохранена.");
-        for (int i = 1; i < 15; i++) {
-            if (i < 11) {
-                infoTasks += taskManager.printTask(taskManager.getTaskList(), idTask) + "\n";
-            } else {
-                taskManager.printTask(taskManager.getTaskList(), idTask);
-            }
-        }
-        Assertions.assertEquals(infoTasks, taskManager.printHistory(),
-                "Ошибка, размерность истории превышена.");
+        taskManager.printTask(taskManager.getTaskList(), idTask);
+        name = "Эпик 1";
+        description = "Эпик 1...";
+        idEpic = taskManager.creatingEpic(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(),
+                name, description);
+        taskManager.printEpic(taskManager.getEpicList(), idEpic);
+        taskManager.printEpic(taskManager.getEpicList(), idEpic);
+        taskManager.printTask(taskManager.getTaskList(), idTask);
+        Assertions.assertEquals(infoHistory, taskManager.printHistory(),
+                "Ошибка, выводимая история задач не совпадает с ожидаемым результатом.");
     }
 
 }
