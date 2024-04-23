@@ -3,7 +3,7 @@ package managers.task;
 import managers.history.HistoryManager;
 import managers.Managers;
 import tasks.*;
-import status.Status;
+import tasks.status.Status;
 import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
