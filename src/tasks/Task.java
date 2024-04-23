@@ -1,6 +1,7 @@
 package tasks;
 
-import status.Status;
+import tasks.status.Status;
+import tasks.type.Type;
 import java.util.Objects;
 
 public class Task {
@@ -26,10 +27,13 @@ public class Task {
         return status;
     }
 
+    public Type getType() {
+        return Type.TASK;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -69,4 +73,5 @@ public class Task {
         return result += ", status='" + status + '\'' +
                 '}';
     }
+
 }
