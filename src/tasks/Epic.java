@@ -1,8 +1,15 @@
 package tasks;
 
+import tasks.type.Type;
+
 public class Epic extends Task {
     public Epic(String name, String description) {
         super(name, description);
+    }
+
+    @Override
+    public Type getType() {
+        return  Type.EPIC;
     }
 
     @Override
@@ -17,4 +24,5 @@ public class Epic extends Task {
         return result += ", status='" + getStatus() + '\'' +
                 '}';
     }
+
 }
