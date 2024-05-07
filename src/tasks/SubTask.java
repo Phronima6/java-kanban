@@ -1,8 +1,15 @@
 package tasks;
 
+import tasks.type.Type;
+
 public class SubTask extends Task {
     public SubTask(String name, String description) {
         super(name, description);
+    }
+
+    @Override
+    public Type getType() {
+        return  Type.SUBTASK;
     }
 
     @Override
@@ -17,4 +24,5 @@ public class SubTask extends Task {
         return result += ", status='" + getStatus() + '\'' +
                 '}';
     }
+
 }

@@ -2,15 +2,17 @@ package test;
 
 import managers.Managers;
 import managers.task.TaskManager;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-public class UserTest { // Дополнительное задание Спринта № 6. Реализуем пользовательский сценарий
+public class UserTestSprint6 { // Дополнительное задание Спринта № 6. Реализуем пользовательский сценарий
 
     public static void main(String[] args) {
 
         Managers managers = new Managers();
-        TaskManager taskManager = managers.getDefault();
-        String name; // Название задачи
-        String description; // Описание задачи
+        String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
+        TaskManager taskManager = managers.getFileBackedTaskManager(filePath);
         int idTask; // id обычной Задачи
         int idEpic; // id задачи типа Эпик
         int idSubTask; // id Подзадачи
@@ -64,5 +66,14 @@ public class UserTest { // Дополнительное задание Спри�
 
         // Выводим истоитю задач
         System.out.println(taskManager.printHistory());
+
+        // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
+        try {
+            Files.delete(Paths.get(filePath));
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
     }
+
 }

@@ -1,22 +1,37 @@
 package test;
 
 import managers.Managers;
-import status.Status;
+import org.junit.jupiter.api.AfterEach;
+import tasks.status.Status;
 import managers.task.*;
 import tasks.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class InMemoryTaskManagerTest {
 
     Managers managers = new Managers();
-    TaskManager taskManager = managers.getDefault();
+    String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
+    TaskManager taskManager = managers.getFileBackedTaskManager(filePath);
     String name; // Название задачи
     String description; // Описание задачи
     int idTask; // id обычной Задачи
     int idEpic; // id задачи типа Эпик
     int idSubTask; // id Подзадачи
     Status status; // Стутус задачи
+
+    // После каждого теста удаляем созданный файл (необходимо для корректной работы созданныъ ранее тестов)
+    @AfterEach
+    public void deleteFileAfterEach() {
+        try {
+            Files.delete(Paths.get(filePath));
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 
     // Проверяем: создание, обновление, вывод, удаление и совпадение id обычной Задачи
     @Test
