@@ -30,28 +30,28 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Files.createFile(pathTasksFile);
             }
         } catch (IOException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка при создании файла для хранения задач." + "!\033[0m");
+            System.out.println("Ошибка при создании файла для хранения задач.");
         }
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath, StandardCharsets.UTF_8))) {
             String safeString = ""; // Вспомогательная строка для считывания задач из файла
             while ((safeString = bufferedReader.readLine()) != null) {
                 String[] split = safeString.split(", ");
                 if (split[1].equals(Type.TASK.toString())) { // Если считання строка относится к обычной Задаче
-                    int idTask = super.creatingTask(getTaskList(), split[2], split[4]);
+                    int idTask = super.creatingTask(split[2], split[4], split[5], Integer.parseInt(split[6]));
                 }
                 if (split[1].equals(Type.EPIC.toString())) { // Если считання строка относится к задаче типа Эпик
-                    int idEpic = super.creatingEpic(getSubTaskListOfEpic(), getEpicList(), split[2], split[4]);
+                    int idEpic = super.creatingEpic(split[2], split[4]);
                     idEpicOldNew.put(Integer.parseInt(split[0]), idEpic);
                 }
                 if (split[1].equals(Type.SUBTASK.toString())) { // Если считання строка относится к Подзадаче
-                    int idSubTask = super.creatingSubTask(getSubTaskListOfEpic(), getEpicList(),
-                            idEpicOldNew.get(Integer.parseInt(split[5])), split[2], split[4]);
+                    int idSubTask = super.creatingSubTask(idEpicOldNew.get(Integer.parseInt(split[7])),
+                            split[2], split[4], split[5], Integer.parseInt(split[6]));
                 }
             }
         } catch (NoSuchFileException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка, файл не найден." + "!\033[0m");
+            System.out.println("Ошибка, файл не найден.");
         } catch (IOException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка при чтении файла." + "!\033[0m");
+            System.out.println("Ошибка при чтении файла.");
         }
     }
 
@@ -59,11 +59,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void save() {
         try (BufferedWriter bufferedWriter
                      = new BufferedWriter(new FileWriter(filePath, StandardCharsets.UTF_8))) {
-            bufferedWriter.write("id, type, name, staus, description, epic");
+            bufferedWriter.write("id, type, name, staus, description, startTime, duration, epic");
             for (Task task : getTaskList().values()) {
                 bufferedWriter.newLine();
-                bufferedWriter.write(String.format("%d, %s, %s, %s, %s", task.hashCode(), task.getType(),
-                        task.getName(), task.getStatus(), task.getDescription()));
+                bufferedWriter.write(String.format("%d, %s, %s, %s, %s, %s, %d", task.hashCode(), task.getType(),
+                        task.getName(), task.getStatus(), task.getDescription(), task.getStartTime(),
+                        task.getDuration().toMinutes()));
             }
             for (Epic epic : getEpicList().values()) {
                 bufferedWriter.newLine();
@@ -73,87 +74,83 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (Integer idEpic : getSubTaskListOfEpic().keySet()) {
                 for (SubTask subTask : getSubTaskListOfEpic().get(idEpic).values()) {
                     bufferedWriter.newLine();
-                    bufferedWriter.write(String.format("%d, %s, %s, %s, %s, %d", subTask.hashCode(), subTask.getType(),
-                            subTask.getName(), subTask.getStatus(), subTask.getDescription(), idEpic));
+                    bufferedWriter.write(String.format("%d, %s, %s, %s, %s, %s, %d, %d", subTask.hashCode(),
+                            subTask.getType(), subTask.getName(), subTask.getStatus(), subTask.getDescription(),
+                            subTask.getStartTime(), subTask.getDuration().toMinutes(), idEpic));
                 }
             }
         } catch (NoSuchFileException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка, файл не найден." + "!\033[0m");
+            System.out.println("Ошибка, файл не найден.");
         } catch (IOException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка при записи задач в файл." + "!\033[0m");
+            System.out.println("Ошибка при записи задач в файл.");
             throw new ManagerSaveException(exception);
         }
     }
 
     @Override
-    public int creatingTask(HashMap<Integer, Task> taskList, String name, String description) {
-        int idTask = super.creatingTask(taskList, name, description);
+    public int creatingTask(String name, String description, String startTime, long duration) {
+        int idTask = super.creatingTask(name, description, startTime, duration);
         save();
         return idTask;
     }
 
     @Override
-    public int creatingEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                            HashMap<Integer, Epic> epicList, String name, String description) {
-        int idEpic = super.creatingEpic(subTaskListOfEpic, epicList, name, description);
+    public int creatingEpic(String name, String description) {
+        int idEpic = super.creatingEpic(name, description);
         save();
         return idEpic;
     }
 
     @Override
-    public int creatingSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                               HashMap<Integer, Epic> epicList, int idEpic, String name, String description) {
-        int idSubTask = super.creatingSubTask(subTaskListOfEpic, epicList, idEpic, name, description);
+    public int creatingSubTask(int idEpic, String name, String description,
+                               String startTime, long duration) {
+        int idSubTask = super.creatingSubTask(idEpic, name, description,
+                                              startTime, duration);
         save();
         return idSubTask;
     }
 
     @Override
-    public void updateTask(HashMap<Integer, Task> taskList, int idTask, String name, String description,
-                           Status status) {
-        super.updateTask(taskList, idTask, name, description, status);
+    public void updateTask(int idTask, String name, String description,
+                           Status status, String startTime, long duration) {
+        super.updateTask(idTask, name, description, status, startTime, duration);
         save();
     }
 
     @Override
-    public void updateEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                           HashMap<Integer, Epic> epicList, int idEpic, String name, String description) {
-        super.updateEpic(subTaskListOfEpic, epicList, idEpic, name, description);
+    public void updateEpic(int idEpic, String name, String description) {
+        super.updateEpic(idEpic, name, description);
         save();
     }
 
     @Override
-    public void updateSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                              HashMap<Integer, Epic> epicList, int idEpic, int idSubTask, String name,
-                              String description, Status status) {
-        super.updateSubTask(subTaskListOfEpic, epicList, idEpic, idSubTask, name, description, status);
+    public void updateSubTask(int idEpic, int idSubTask, String name, String description, Status status,
+                              String startTime, long duration) {
+        super.updateSubTask(idEpic, idSubTask, name, description, status, startTime, duration);
         save();
     }
 
     @Override
-    public void delAllTasks(HashMap<Integer, Task> taskList, HashMap<Integer, Epic> epicList,
-                            HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic) {
-        super.delAllTasks(taskList, epicList, subTaskListOfEpic);
+    public void delAllTasks() {
+        super.delAllTasks();
         save();
     }
 
     @Override
-    public void delTask(HashMap<Integer, Task> taskList, int idTask) {
-        super.delTask(taskList, idTask);
+    public void delTask(int idTask) {
+        super.delTask(idTask);
         save();
     }
 
     @Override
-    public void delEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                        HashMap<Integer, Epic> epicList, int idEpic) {
-        super.delEpic(subTaskListOfEpic,epicList, idEpic);
+    public void delEpic(int idEpic) {
+        super.delEpic(idEpic);
         save();
     }
 
     @Override
-    public void delSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                           HashMap<Integer, Epic> epicList, int idEpic, int idSubTask) {
-        super.delSubTask(subTaskListOfEpic,epicList, idEpic, idSubTask);
+    public void delSubTask(int idEpic, int idSubTask) {
+        super.delSubTask(idEpic, idSubTask);
         save();
     }
 
