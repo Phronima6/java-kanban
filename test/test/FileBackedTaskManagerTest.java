@@ -31,9 +31,9 @@ public class FileBackedTaskManagerTest {
                 quantityString++;
             }
         } catch (NoSuchFileException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка, файл не найден." + "!\033[0m");
+            System.out.println("Ошибка, файл не найден.");
         } catch (IOException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка при чтении файла." + "!\033[0m");
+            System.out.println("Ошибка при чтении файла.");
         }
         Assertions.assertEquals(0, quantityString, "Ошибка, файл не пустой.");
     }
@@ -42,18 +42,17 @@ public class FileBackedTaskManagerTest {
     @Test
     public void createTasksSaveFile() {
         int quantityString = 0; // Счётчик строк записанных в файл
-        idEpic = taskManager.creatingEpic(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(),
-                "Эпик 1", "Эпик 1...");
-        idSubTask = taskManager.creatingSubTask(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(),
-                idEpic, "Подзадача 1.1", "Подзадача 1.1...");
+        idEpic = taskManager.creatingEpic("Эпик 1", "Эпик 1...");
+        idSubTask = taskManager.creatingSubTask(idEpic, "Подзадача 1.1", "Подзадача 1.1...",
+                "2021-12-21T21:00:00", 10);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath, StandardCharsets.UTF_8))) {
             while (bufferedReader.readLine() != null) {
                 quantityString++;
             }
         } catch (NoSuchFileException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка, файл не найден." + "!\033[0m");
+            System.out.println("Ошибка, файл не найден.");
         } catch (IOException exception) {
-            System.out.println("\\033[31;4;4m" + "Ошибка при чтении файла." + "!\033[0m");
+            System.out.println("Ошибка при чтении файла.");
         }
         Assertions.assertEquals(3, quantityString, "Ошибка, количество строк в файле не соответствует "
                 + "ожидаемому значению.");
@@ -70,8 +69,10 @@ public class FileBackedTaskManagerTest {
     @Test
     public void createTasksFromFile() {
         int quantityTasks = 0; // Счётчик задач записаных в HashMap
-        idTask = taskManager.creatingTask(taskManager.getTaskList(), "Задача 1", "Задача 1...");
-        idTask = taskManager.creatingTask(taskManager.getTaskList(), "Задача 2", "Задача 2...");
+        idTask = taskManager.creatingTask("Задача 1", "Задача 1...", "2021-12-21T21:00:00",
+                10);
+        idTask = taskManager.creatingTask("Задача 2", "Задача 2...","2021-12-21T22:00:00",
+                10);
         TaskManager taskManagerOne = managers.getFileBackedTaskManager(filePath);
         for (Task task : taskManagerOne.getTaskList().values()) {
             quantityTasks++;

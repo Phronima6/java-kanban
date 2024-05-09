@@ -2,7 +2,10 @@ package managers.task;
 
 import tasks.status.Status;
 import tasks.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -15,67 +18,68 @@ public interface TaskManager {
     // Возвращаем список Подзадач с id Эпика
     HashMap<Integer, HashMap<Integer, SubTask>> getSubTaskListOfEpic();
 
+    // Возвращаем список задач, отсортированных по приоритету
+    public TreeSet<Task> getSortedTasks();
+
     // Создание обычной Задачи
-    int creatingTask(HashMap<Integer, Task> taskList, String name, String description);
+    int creatingTask(String name, String description, String startTime, long duration);
 
     // Создание задачи типа Эпик
-    int creatingEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                     HashMap<Integer, Epic> epicList, String name, String description);
+    int creatingEpic(String name, String description);
 
     // Создание Подзадачи
-    int creatingSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                        HashMap<Integer, Epic> epicList, int idEpic, String name, String description);
+    int creatingSubTask(int idEpic, String name, String description, String startTime, long duration);
 
     // Обновление обычной Задачи
-    void updateTask(HashMap<Integer, Task> taskList, int idTask, String name, String description,
-                    Status status);
+    void updateTask(int idTask, String name, String description, Status status , String startTime, long duration);
 
     // Обновление задачи типа Эпик
-    void updateEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                    HashMap<Integer, Epic> epicList, int idEpic, String name, String description);
+    void updateEpic(int idEpic, String name, String description);
 
     // Обновление Подзадачи и обновление статуса задачи типа Эпик
-    void updateSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                       HashMap<Integer, Epic> epicList, int idEpic, int idSubTask, String name,
-                       String description, Status status);
+    void updateSubTask(int idEpic, int idSubTask, String name, String description, Status status, String startTime,
+                       long duration);
 
     // Получение списка всех задач
-    String printAllTasks(HashMap<Integer, Task> taskList, HashMap<Integer, Epic> epicList,
-                         HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic);
+    String printAllTasks();
 
     // Получение списка всех Подзадач определённой задачи типа Эпик
-    String printAllEpicSubTasks(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic, int idEpic);
+    String printAllEpicSubTasks(int idEpic);
 
     // Получение обычной Задачи по идентификатору
-    String printTask(HashMap<Integer, Task> taskList, int idTask);
+    String printTask(int idTask);
 
     // Получение задачи типа Эпик по идентификатору
-    String printEpic(HashMap<Integer, Epic> epicList, int idEpic);
+    String printEpic(int idEpic);
 
     // Получение Подзадачи по идентификатору
-    String printSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                        int idEpic, int idSubTask);
+    String printSubTask(int idEpic, int idSubTask);
 
     // Печать истории просмотренных задач
     String printHistory();
 
+    // Печать задач, отсортированных по приоритету
+    String getPrioritizedTasks();
+
     // Удаление всех задач
-    void delAllTasks(HashMap<Integer, Task> taskList, HashMap<Integer, Epic> epicList,
-                     HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic);
+    void delAllTasks();
 
     // Удаление обычной Задачи по идентификатору
-    void delTask(HashMap<Integer, Task> taskList, int idTask);
+    void delTask(int idTask);
 
     // Удаление задачи типа Эпик по идентификатору и, как следствие, удаление всех Подзадач данного Эпика
-    void delEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                 HashMap<Integer, Epic> epicList, int idEpic);
+    void delEpic(int idEpic);
 
     // Удаление Подзадачи по идентификатору и обновление статуса задачи типа Эпик
-    void delSubTask(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                    HashMap<Integer, Epic> epicList, int idEpic, int idSubTask);
+    void delSubTask(int idEpic, int idSubTask);
 
     // Обновление статуса задачи типа Эпик
-    void updateStatusOfEpic(HashMap<Integer, HashMap<Integer, SubTask>> subTaskListOfEpic,
-                       HashMap<Integer, Epic> epicList, int idEpic);
+    void updateStatusOfEpic(int idEpic);
+
+    // Обновляет дату и время задачи типа Эпик
+    void updateDateTimeOfEpic(int idEpic);
+
+    // Проверяет перечение временных отрезков задач
+    void intersectionDataTime(LocalDateTime startTime, Duration duration);
 
 }

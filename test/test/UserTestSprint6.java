@@ -18,53 +18,53 @@ public class UserTestSprint6 { // Дополнительное задание С
         int idSubTask; // id Подзадачи
 
         // Создаём Задачу № 1 и выводим её значение
-        idTask = taskManager.creatingTask(taskManager.getTaskList(), "Задача 1", "Задача 1...");
-        System.out.println(taskManager.printTask(taskManager.getTaskList(), idTask));
+        idTask = taskManager.creatingTask("Задача 1", "Задача 1...", "2021-12-20T11:30:00",
+                10);
+        System.out.println(taskManager.printTask(idTask));
 
         // Создаём Задачу № 2 и выводим её значение
-        idTask = taskManager.creatingTask(taskManager.getTaskList(), "Задача 2", "Задача 2...");
-        System.out.println(taskManager.printTask(taskManager.getTaskList(), idTask));
+        idTask = taskManager.creatingTask("Задача 2", "Задача 2...", "2021-12-21T12:22:21",
+                10);
+        System.out.println(taskManager.printTask(idTask));
 
         // Создаём задачу типа Эпик № 1 и выводим её значение
-        idEpic = taskManager.creatingEpic(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(),
-                "Эпик 1", "Эпик 1...");
-        System.out.println(taskManager.printEpic(taskManager.getEpicList(), idEpic));
+        idEpic = taskManager.creatingEpic("Эпик 1", "Эпик 1...");
+        System.out.println(taskManager.printEpic(idEpic));
 
         // Создаём Подзадачу № 1 для задачи типа Эпик № 1 и выводим её значение
-        idSubTask = taskManager.creatingSubTask(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(), idEpic,
-                "Подзадача 1.1", "Подзадача 1.1...");
-        System.out.println(taskManager.printSubTask(taskManager.getSubTaskListOfEpic(), idEpic, idSubTask));
+        idSubTask = taskManager.creatingSubTask(idEpic, "Подзадача 1.1", "Подзадача 1.1...",
+                "2021-12-22T21:00:00", 10);
+        System.out.println(taskManager.printSubTask(idEpic, idSubTask));
 
         // Создаём Подзадачу № 2 для задачи типа Эпик № 1 и выводим её значение
-        idSubTask = taskManager.creatingSubTask(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(), idEpic,
-                "Подзадача 2.1", "Подзадача 2.1...");
-        System.out.println(taskManager.printSubTask(taskManager.getSubTaskListOfEpic(), idEpic, idSubTask));
+        idSubTask = taskManager.creatingSubTask(idEpic, "Подзадача 2.1", "Подзадача 2.1...",
+                "2021-12-23T21:20:00", 10);
+        System.out.println(taskManager.printSubTask(idEpic, idSubTask));
 
         // Создаём Подзадачу № 3 для задачи типа Эпик № 1 и выводим её значение
-        idSubTask = taskManager.creatingSubTask(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(), idEpic,
-                "Подзадача 3.1", "Подзадача 3.1...");
-        System.out.println(taskManager.printSubTask(taskManager.getSubTaskListOfEpic(), idEpic, idSubTask));
+        idSubTask = taskManager.creatingSubTask(idEpic, "Подзадача 3.1", "Подзадача 3.1...",
+                "2021-12-24T21:30:00", 10);
+        System.out.println(taskManager.printSubTask(idEpic, idSubTask));
 
         // Выводим значение задачи типа Эпик № 1
-        System.out.println(taskManager.printEpic(taskManager.getEpicList(), idEpic));
-        System.out.println(taskManager.printEpic(taskManager.getEpicList(), idEpic));
+        System.out.println(taskManager.printEpic(idEpic));
+        System.out.println(taskManager.printEpic(idEpic));
 
         // Удаляем задачу типа Эпик № 1 и как следствие все её подзадачи
-        taskManager.delEpic(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(), idEpic);
+        taskManager.delEpic(idEpic);
 
         // Создаём задачу типа Эпик № 2 и выводим её значение
-        idEpic = taskManager.creatingEpic(taskManager.getSubTaskListOfEpic(), taskManager.getEpicList(),
-                "Эпик 2", "Эпик 2...");
-        System.out.println(taskManager.printEpic(taskManager.getEpicList(), idEpic));
+        idEpic = taskManager.creatingEpic("Эпик 2", "Эпик 2...");
+        System.out.println(taskManager.printEpic(idEpic));
 
         // Выводим значение Задачи № 2
-        System.out.println(taskManager.printTask(taskManager.getTaskList(), idTask));
-        System.out.println(taskManager.printTask(taskManager.getTaskList(), idTask));
-        System.out.println(taskManager.printTask(taskManager.getTaskList(), idTask));
+        System.out.println(taskManager.printTask(idTask));
+        System.out.println(taskManager.printTask(idTask));
+        System.out.println(taskManager.printTask(idTask));
 
         System.out.print("\n");
 
-        // Выводим истоитю задач
+        // Выводим историю задач
         System.out.println(taskManager.printHistory());
 
         // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
