@@ -12,6 +12,12 @@ public class UserTestSprint7 { // Дополнительное задание С
 
         Managers managers = new Managers();
         String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
+        // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
+        try {
+            Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
         TaskManager taskManagerOne = managers.getFileBackedTaskManager(filePath); // Создаём первый Менеджер задач
 
         // Создаём Задачу № 1 и выводим её значение

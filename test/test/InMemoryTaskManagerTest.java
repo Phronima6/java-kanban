@@ -1,7 +1,8 @@
 package test;
 
 import managers.Managers;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
 import tasks.status.Status;
 import managers.task.*;
 import tasks.*;
@@ -16,15 +17,26 @@ import java.time.LocalDateTime;
 public class InMemoryTaskManagerTest {
 
     Managers managers = new Managers();
-    String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
-    TaskManager taskManager = managers.getFileBackedTaskManager(filePath);
+    static String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
+    TaskManager taskManager;
     int idTask; // id обычной Задачи
     int idEpic; // id задачи типа Эпик
     int idSubTask; // id Подзадачи
 
-    // После каждого теста удаляем созданный файл (необходимо для корректной работы созданныъ ранее тестов)
-    @AfterEach
-    public void deleteFileAfterEach() {
+    // Перед каждым тестом удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
+    @BeforeEach
+    public void deleteFileBeforeEach() {
+        try {
+            Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        taskManager = managers.getFileBackedTaskManager(filePath);
+    }
+
+    // После всех тестов удаляем созданный файл (необходимо для корректной работы созданныъ ранее тестов)
+    @AfterAll
+    public static void deleteFileAfterAll() {
         try {
             Files.delete(Paths.get(filePath));
         } catch (IOException exception) {

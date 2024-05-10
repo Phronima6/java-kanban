@@ -12,6 +12,12 @@ public class UserTestSprint6 { // Дополнительное задание С
 
         Managers managers = new Managers();
         String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
+        // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
+        try {
+            Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
         TaskManager taskManager = managers.getFileBackedTaskManager(filePath);
         int idTask; // id обычной Задачи
         int idEpic; // id задачи типа Эпик

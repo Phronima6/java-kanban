@@ -4,9 +4,6 @@ import managers.history.HistoryManager;
 import managers.Managers;
 import tasks.*;
 import tasks.status.Status;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -314,11 +311,6 @@ public class InMemoryTaskManager implements TaskManager {
                 throw new IntersectionException("Временные интервалы задач наложены друг на друга");
             }
         } catch (IntersectionException exception) {
-            try { // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
-                Files.delete(Paths.get("SaveTasks.txt"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             throw new RuntimeException(exception);
         }
     }

@@ -2,7 +2,9 @@ package test;
 
 import managers.Managers;
 import managers.task.*;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Task;
 import java.io.BufferedReader;
@@ -16,11 +18,32 @@ import java.nio.file.Paths;
 public class FileBackedTaskManagerTest {
 
     Managers managers = new Managers();
-    String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
+    static String filePath = "SaveTasks.txt"; // Путь для создания, записи и удаления файла
     TaskManager taskManager = managers.getFileBackedTaskManager(filePath);
     int idTask; // id обычной Задачи
     int idEpic; // id задачи типа Эпик
     int idSubTask; // id Подзадачи
+
+    // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
+    @BeforeEach
+    public void deleteFileBeforeEach() {
+        try {
+            Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        taskManager = managers.getFileBackedTaskManager(filePath);
+    }
+
+    // После всех тестов удаляем созданный файл (необходимо для корректной работы созданныъ ранее тестов)
+    @AfterAll
+    public static void deleteFileAfterAll() {
+        try {
+            Files.delete(Paths.get(filePath));
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
 
     // Проверяем создание пустого файла
     @Test
@@ -56,13 +79,6 @@ public class FileBackedTaskManagerTest {
         }
         Assertions.assertEquals(3, quantityString, "Ошибка, количество строк в файле не соответствует "
                 + "ожидаемому значению.");
-
-        // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
-        try {
-            Files.delete(Paths.get(filePath));
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
     }
 
     // Проверяем восстановление задач из файла
@@ -79,13 +95,6 @@ public class FileBackedTaskManagerTest {
         }
         Assertions.assertEquals(2, quantityTasks, "Ошибка, количество восстановленных из файла "
                 + "задач не соответствует ожидаемому згачению.");
-
-        // Удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
-        try {
-            Files.delete(Paths.get(filePath));
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
     }
 
 }

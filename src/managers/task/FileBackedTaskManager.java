@@ -102,17 +102,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int creatingSubTask(int idEpic, String name, String description,
-                               String startTime, long duration) {
-        int idSubTask = super.creatingSubTask(idEpic, name, description,
-                                              startTime, duration);
+    public int creatingSubTask(int idEpic, String name, String description, String startTime, long duration) {
+        int idSubTask = super.creatingSubTask(idEpic, name, description, startTime, duration);
         save();
         return idSubTask;
     }
 
     @Override
-    public void updateTask(int idTask, String name, String description,
-                           Status status, String startTime, long duration) {
+    public void updateTask(int idTask, String name, String description, Status status, String startTime,
+                           long duration) {
         super.updateTask(idTask, name, description, status, startTime, duration);
         save();
     }
