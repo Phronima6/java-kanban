@@ -34,7 +34,7 @@ public class InMemoryTaskManagerTest {
         taskManager = managers.getFileBackedTaskManager(filePath);
     }
 
-    // После всех тестов удаляем созданный файл (необходимо для корректной работы созданныъ ранее тестов)
+    // После всех тестов удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
     @AfterAll
     public static void deleteFileAfterAll() {
         try {
@@ -101,7 +101,7 @@ public class InMemoryTaskManagerTest {
         idSubTask = taskManager.creatingSubTask(idEpic, "Подзадача 3", "Подзадача 3...",
                 "2021-12-21T23:00:00",20);
         Assertions.assertEquals(Status.IN_PROGRESS, taskManager.getEpicList().get(idEpic).getStatus(),
-                "Ошибка, статус задачи типа Эпик отличается от ожидаемого");
+                "Ошибка, статус задачи типа Эпик отличается от ожидаемого.");
         taskManager.delSubTask(idEpic, idSubTask);
         Assertions.assertNull(taskManager.printSubTask(idEpic, idSubTask), "Ошибка, Подзадача не удалена.");
     }
@@ -190,7 +190,7 @@ public class InMemoryTaskManagerTest {
         Assertions.assertEquals(String.valueOf(epicTwo), taskManager.printEpic(idEpic));
     }
 
-    // Проверяем: сохранение, вывод и корректность удаления задач, отсорттрованных по приоритету
+    // Проверяем: сохранение, вывод и корректность удаления задач, отсортированных по приоритету
     @Test
     public void intersectionDataTimeAndDel() {
         String infoAllSortedTasks; // Ожидаемый результат вывода всех задач, отсортированных по приоритету

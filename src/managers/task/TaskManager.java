@@ -4,6 +4,7 @@ import tasks.status.Status;
 import tasks.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
 
@@ -17,6 +18,9 @@ public interface TaskManager {
 
     // Возвращаем список Подзадач с id Эпика
     HashMap<Integer, HashMap<Integer, SubTask>> getSubTaskListOfEpic();
+
+    // Возвращаем историю просмотренных задач в виде списка
+    public ArrayList<Task> getHistory();
 
     // Возвращаем список задач, отсортированных по приоритету
     public TreeSet<Task> getSortedTasks();
@@ -79,7 +83,7 @@ public interface TaskManager {
     // Обновляет дату и время задачи типа Эпик
     void updateDateTimeOfEpic(int idEpic);
 
-    // Проверяет перечение временных отрезков задач
+    // Проверяет пересечение временных отрезков задач
     void intersectionDataTime(LocalDateTime startTime, Duration duration);
 
 }

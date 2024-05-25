@@ -11,7 +11,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void addHistory(Task task) {
-        if (!historyTasksList.containsKey(task.hashCode())) { // Если такой задачи нет в истоию
+        if (!historyTasksList.containsKey(task.hashCode())) { // Если такой задачи нет в истории
             historyTasksList.put(task.hashCode(), linkLast(task));
         } else {
             remove(task.hashCode());
@@ -50,7 +50,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             if (historyTasksList.get(idTask).prev != null) { // Если есть ссылка на предыдущий узел Node
                 historyTasksList.get(idTask).prev.next = historyTasksList.get(idTask).next;
             }
-            if (historyTasksList.get(idTask).next != null) { // Если есть ссылка на седующий узел Node
+            if (historyTasksList.get(idTask).next != null) { // Если есть ссылка на следующий узел Node
                 historyTasksList.get(idTask).next.prev = historyTasksList.get(idTask).prev;
             } else { // Для корректной работы ссылки узла Node при добавлении в историю одинаковых задач
                 last = historyTasksList.get(idTask).prev;
