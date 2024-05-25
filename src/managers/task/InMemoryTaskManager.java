@@ -6,6 +6,7 @@ import tasks.*;
 import tasks.status.Status;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeSet;
@@ -37,6 +38,12 @@ public class InMemoryTaskManager implements TaskManager {
         return subTaskListOfEpic;
     }
 
+    @Override
+    public ArrayList<Task> getHistory() {
+        return historyManager.getHistory();
+    }
+
+    @Override
     public TreeSet<Task> getSortedTasks() {
         return sortedTasks;
     }
@@ -239,7 +246,7 @@ public class InMemoryTaskManager implements TaskManager {
                 getSortedTasks().remove(getSubTaskListOfEpic().get(idEpic).get(id));
                 historyManager.remove(id); // Удаляем из истории все Подзадачи, которые относятся к задаче типа Эпик
             }
-            if (getSubTaskListOfEpic().containsKey(idEpic)) { // Если список Подзадач конктерной задачи типа Эпик создан
+            if (getSubTaskListOfEpic().containsKey(idEpic)) { // Если список Подзадач конкретной задачи типа Эпик создан
                 getSubTaskListOfEpic().remove(idEpic);
             }
             historyManager.remove(idEpic); // Удаляем задачу типа Эпик из истории

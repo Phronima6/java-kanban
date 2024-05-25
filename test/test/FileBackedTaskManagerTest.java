@@ -35,7 +35,7 @@ public class FileBackedTaskManagerTest {
         taskManager = managers.getFileBackedTaskManager(filePath);
     }
 
-    // После всех тестов удаляем созданный файл (необходимо для корректной работы созданныъ ранее тестов)
+    // После всех тестов удаляем созданный файл (необходимо для корректной работы созданных ранее тестов)
     @AfterAll
     public static void deleteFileAfterAll() {
         try {
@@ -84,7 +84,7 @@ public class FileBackedTaskManagerTest {
     // Проверяем восстановление задач из файла
     @Test
     public void createTasksFromFile() {
-        int quantityTasks = 0; // Счётчик задач записаных в HashMap
+        int quantityTasks = 0; // Счётчик задач записанных в HashMap
         idTask = taskManager.creatingTask("Задача 1", "Задача 1...", "2021-12-21T21:00:00",
                 10);
         idTask = taskManager.creatingTask("Задача 2", "Задача 2...","2021-12-21T22:00:00",
@@ -94,7 +94,7 @@ public class FileBackedTaskManagerTest {
             quantityTasks++;
         }
         Assertions.assertEquals(2, quantityTasks, "Ошибка, количество восстановленных из файла "
-                + "задач не соответствует ожидаемому згачению.");
+                + "задач не соответствует ожидаемому значению.");
     }
 
 }
