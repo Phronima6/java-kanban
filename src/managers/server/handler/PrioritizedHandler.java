@@ -5,6 +5,7 @@ import managers.task.TaskManager;
 import java.io.IOException;
 
 public class PrioritizedHandler extends BaseHttpHandler {
+
     public PrioritizedHandler(TaskManager taskManager) {
         super(taskManager);
     }
@@ -14,9 +15,5 @@ public class PrioritizedHandler extends BaseHttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         writeResponse(httpExchange, gson.toJson(taskManager.getSortedTasks()), 200);
     }
-
-    /*------------------------------------------------------------------------------------------------------------------
-    GET     http://localhost:8080/prioritized  // Получаем все задачи, отсортированные по приоритету
-    ------------------------------------------------------------------------------------------------------------------*/
 
 }

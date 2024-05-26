@@ -79,12 +79,4 @@ public class SubTaskHandler extends BaseHttpHandler {
         }
     }
 
-    /*------------------------------------------------------------------------------------------------------------------
-    GET     http://localhost:8080/subtasks/{idEpic}              // Получаем все Подзадачи по id задачи типа Эпик
-    GET     http://localhost:8080/subtasks/{idEpic}/{idSubTask}  // Получаем Подзадачу по id
-    POST    http://localhost:8080/subtasks/{idEpic}              // Создаём Подзадачу
-    POST    http://localhost:8080/subtasks/{idEpic}/{idSubTask}  // Обновляем Подзадачу по id
-    DELETE  http://localhost:8080/subtasks/{idEpic}/{idSubTask}  // Удаляем Подзадачу по id
-    ------------------------------------------------------------------------------------------------------------------*/
-
 }
