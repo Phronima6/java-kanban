@@ -21,7 +21,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    // Метод для создания и восстанавления задач из файла
+    // Метод для создания и восстановления задач из файла
     public void loadFromFile(String filePath) {
         Path pathTasksFile = Paths.get(filePath);
         HashMap<Integer, Integer> idEpicOldNew = new HashMap<>();
@@ -36,14 +36,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             String safeString = ""; // Вспомогательная строка для считывания задач из файла
             while ((safeString = bufferedReader.readLine()) != null) {
                 String[] split = safeString.split(", ");
-                if (split[1].equals(Type.TASK.toString())) { // Если считання строка относится к обычной Задаче
+                if (split[1].equals(Type.TASK.toString())) { // Если считанная строка относится к обычной Задаче
                     int idTask = super.creatingTask(split[2], split[4], split[5], Integer.parseInt(split[6]));
                 }
-                if (split[1].equals(Type.EPIC.toString())) { // Если считання строка относится к задаче типа Эпик
+                if (split[1].equals(Type.EPIC.toString())) { // Если считанная строка относится к задаче типа Эпик
                     int idEpic = super.creatingEpic(split[2], split[4]);
                     idEpicOldNew.put(Integer.parseInt(split[0]), idEpic);
                 }
-                if (split[1].equals(Type.SUBTASK.toString())) { // Если считання строка относится к Подзадаче
+                if (split[1].equals(Type.SUBTASK.toString())) { // Если считанная строка относится к Подзадаче
                     int idSubTask = super.creatingSubTask(idEpicOldNew.get(Integer.parseInt(split[7])),
                             split[2], split[4], split[5], Integer.parseInt(split[6]));
                 }
